@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.dirname(__FILE__) + "/../lib"
+
+require 'mini_lisp'
+require 'pp'
+
+# compiler = Wt::Compiler.new()
+# p compiler.compile(ARGV.join(' '))
+
+parser = MiniLisp::Parser.new
+transform = MiniLisp::Transform.new
+
+code = %Q{
+  def add(a, b)
+    a + b
+  end
+}
+
+code2 = %Q{
+  def end
+}
+
+ast = transform.apply parser.parse(code2)
+
+pp ast
