@@ -6,7 +6,6 @@ describe MiniLisp::Parser do
 
   describe 'space' do
     subject { parser.space? }
-
     it { should parse('') }
     it { should parse(' ') }
     it { should parse("\n") }
@@ -18,15 +17,25 @@ describe MiniLisp::Parser do
 
   describe 'operators' do
     subject { parser.operator }
-
     it { should parse('+') }
     it { should parse('+ ') }
   end
 
   describe 'addition expression' do
     subject { parser.sum }
-
     it { should parse('1+2') }
     it { should parse('1 +2') }
+  end
+
+  describe 'arglist' do
+    subject { parser.arglist }
+    it { should parse('a, b') }
+  end
+
+  describe 'funcstart' do
+    subject { parser.funcstart }
+    it { should parse('def foo()') }
+    it { should parse('def foo(a) ') }
+    it { should parse('def foo (a, b)') }
   end
 end

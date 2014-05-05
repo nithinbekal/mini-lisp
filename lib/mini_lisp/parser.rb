@@ -24,23 +24,25 @@ module MiniLisp
     end
 
     rule(:identifier) do
-      match['a-z'].repeat(1)
+      match['a-z'].repeat(1) >> space?
     end
 
-    rule(:funcdef) do
-      str('def') >> space? >> identifier >> lparen >> arglist >> rparen >>
-        expression >>
-      str('end')
+    rule(:funcstart) do
+      str('def') >> space? >> identifier >> lparen >> arglist.maybe >> rparen
     end
 
-    rule(:fun) do
-      str('def').as(:kw_def) >> space? >> str('end').as(:kw_end)
+    rule(:func) do
+      funcstart >> space? >> expressions >> str('end')
     end
 
     rule(:expression) do
-      sum | integer | fun | funcdef
+      sum | identifier | integer | func
     end
 
-    root :expression
+    rule(:expressions) do
+      space? >> expression.repeat
+    end
+
+    root :expressions
   end
 end
